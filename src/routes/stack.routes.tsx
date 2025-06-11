@@ -5,7 +5,7 @@ import {Home, Cart} from '../pages';
 
 export type StackParamList = {
   Home: undefined;
-  Cart: undefined;
+  'Meu carrinho': undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -14,8 +14,12 @@ export const StackRoutes = () => {
   console.log('Renderizou StackRoutes');
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="Cart" component={Cart} />
+      <Stack.Screen
+        name="Home"
+        component={Home}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen name="Meu carrinho" component={Cart} />
     </Stack.Navigator>
   );
 };

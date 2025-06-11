@@ -1,8 +1,8 @@
 import {combineReducers, Reducer} from 'redux';
-import productGetReducer from './modules/productsGetModule/productGetReducer';
-import {ProductState} from './modules/productsGetModule/productGetTypes';
+import {productGetReducer} from './modules/productsGetModule/productGetReducer';
+import {IProductState} from './modules/productsGetModule/productGetTypes';
 
-const productsModuleReducer: Reducer<{productGetModule: ProductState}> =
+const productsModuleReducer: Reducer<{productGetModule: IProductState}> =
   combineReducers({
     productGetModule: productGetReducer,
   });

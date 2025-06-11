@@ -1,17 +1,18 @@
 import React from 'react';
-import {Text, TouchableOpacity} from 'react-native';
+import {FlatList, Text, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import {useProduct} from './useProduct';
 import Icon from 'react-native-vector-icons/Feather';
 
 import * as S from './styles';
+import {ListProducts} from './components/ListProducts';
 
 export const Home = () => {
   const {products, loading} = useSelector((state: any) => {
     return state.productsModuleReducer.productGetModule;
   });
 
-  const {actions} = useProduct();
+  const {actions} = useProduct({products});
 
   if (loading) {
     return (
@@ -40,9 +41,17 @@ export const Home = () => {
         </TouchableOpacity>
       </S.HeaderContainer>
 
-      {products.map((product: any) => {
-        return <Text key={product.id}>{product.name}</Text>;
-      })}
+      <FlatList
+        data={products}
+        keyExtractor={item => item.id}
+        renderItem={({item}) => (
+          <ListProducts
+            product={item}
+            handleAddProduct={actions.clickAddProduct}
+          />
+        )}
+        showsVerticalScrollIndicator={false}
+      />
     </S.Container>
   );
 };

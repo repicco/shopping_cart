@@ -1,7 +1,11 @@
-import {ProductGetTypes} from './productGetTypes';
+import {EProductGetTypes, IProduct} from './productGetTypes';
 
 export const productGetActions = {
   getProductRequest: () => ({
-    type: ProductGetTypes.GET_PRODUCTS_REQUEST,
+    type: EProductGetTypes.GET_PRODUCTS_REQUEST,
+  }),
+  changeProductsRequest: (products: IProduct[]) => ({
+    type: EProductGetTypes.CHANGE_PRODUCTS_REQUEST,
+    payload: products,
   }),
 };
