@@ -8,7 +8,7 @@ const getProducts = async () => {
       '@products',
     );
     const oldProducts = JSON.parse(oldProductsStr || '[]');
-    let remoteProducts: any[] = [];
+    let remoteProducts: IProduct[] = [];
 
     if (oldProducts?.length && oldProducts.length > 0) {
       remoteProducts = oldProducts;
@@ -16,17 +16,7 @@ const getProducts = async () => {
       remoteProducts = await Promise.resolve(products);
     }
 
-    const newProducts: IProduct[] = [
-      ...remoteProducts.map((item: IProduct) => ({
-        ...item,
-        quantity: 0,
-        totalPrice: 0,
-      })),
-    ];
-
-    console.log({newProducts});
-
-    return newProducts;
+    return remoteProducts;
   } catch (error) {
     return error;
   }

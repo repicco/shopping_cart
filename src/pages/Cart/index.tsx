@@ -3,11 +3,16 @@ import * as S from './styles';
 import {useSelector} from 'react-redux';
 import {FlatList, Text} from 'react-native';
 import {ListItems} from './components/ListItems';
+import {useCart} from './useCart';
+import {formatToBRL} from '../../utils/formatters';
 
 export const Cart = () => {
-  const {products, loading} = useSelector((state: any) => {
-    return state.productsModuleReducer.productGetModule;
+  const {cartProducts, cartPrice, loading} = useSelector((state: any) => {
+    return state.cartModuleReducer.cartChangeModule;
   });
+
+  const {actions} = useCart({cartProducts});
+  const {clickHandleItemToCart, removeProductFromCart} = actions;
 
   if (loading) {
     return (
@@ -17,7 +22,7 @@ export const Cart = () => {
     );
   }
 
-  if (!products) {
+  if (!cartProducts.length) {
     return (
       <S.Container>
         <Text>Sem produtos</Text>
@@ -28,17 +33,27 @@ export const Cart = () => {
   return (
     <S.Container>
       <FlatList
-        data={products}
+        data={cartProducts}
         keyExtractor={item => item.id}
         renderItem={({item}) => (
           <ListItems
             product={item}
-            handleRemoveItem={() => {}}
-            handleAddItem={() => {}}
+            handleRemoveItem={() =>
+              clickHandleItemToCart({product: item, type: 'REMOVE'})
+            }
+            handleAddItem={() =>
+              clickHandleItemToCart({product: item, type: 'ADD'})
+            }
+            removeProductFromCart={removeProductFromCart}
           />
         )}
         showsVerticalScrollIndicator={false}
       />
+
+      <S.TotalContainer>
+        <S.TotalText>Total:</S.TotalText>
+        <S.TotalText>{formatToBRL(cartPrice)}</S.TotalText>
+      </S.TotalContainer>
     </S.Container>
   );
 };

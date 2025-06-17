@@ -8,6 +8,17 @@ export const Container = styled.View`
   border-radius: 8px;
   margin-bottom: 16px;
   gap: 8px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const LeftContent = styled.View`
+  gap: 8px;
+`;
+
+export const RightContent = styled.View`
+  gap: 8px;
 `;
 
 export const TextContent = styled.View`
@@ -29,14 +40,24 @@ export const ButtonContainer = styled.View`
   gap: 8px;
 `;
 
-export const AddProductButton = styled.TouchableOpacity`
+export const AddItemButton = styled.TouchableOpacity`
   background-color: #007bff;
   padding: 4px 4px;
   border-radius: 4px;
 `;
 
+export const RemoveItemButton = styled.TouchableOpacity<{
+  disabledStyle?: boolean;
+}>(({disabledStyle}) => ({
+  backgroundColor: '#dc3545',
+  paddingVertical: 4,
+  paddingHorizontal: 4,
+  borderRadius: 4,
+  opacity: disabledStyle ? 0.5 : 1,
+}));
+
 export const RemoveProductButton = styled.TouchableOpacity`
-  background-color: #dc3500;
-  padding: 4px 4px;
-  border-radius: 4px;
+  background-color: #ddd;
+  padding: 8px 8px;
+  border-radius: 12px;
 `;

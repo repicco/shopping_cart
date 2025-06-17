@@ -12,7 +12,11 @@ export const Home = () => {
     return state.productsModuleReducer.productGetModule;
   });
 
-  const {actions} = useProduct({products});
+  const {cartProducts} = useSelector((state: any) => {
+    return state.cartModuleReducer.cartChangeModule;
+  });
+
+  const {actions} = useProduct({cartProducts});
 
   if (loading) {
     return (
@@ -47,7 +51,8 @@ export const Home = () => {
         renderItem={({item}) => (
           <ListProducts
             product={item}
-            handleAddProduct={actions.clickAddProduct}
+            handleAddProductToCart={actions.clickAddProductToCart}
+            blockAddProductToCart={actions.blockAddProductToCart}
           />
         )}
         showsVerticalScrollIndicator={false}

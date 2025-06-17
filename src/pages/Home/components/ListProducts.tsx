@@ -3,26 +3,30 @@ import React from 'react';
 import * as S from './styles';
 import Icon from 'react-native-vector-icons/Feather';
 import {IProduct} from '../../../store/productModule/modules/productsGetModule/productGetTypes';
+import {formatToBRL} from '../../../utils/formatters';
 
 interface IListProducts {
   product: IProduct;
-  handleAddProduct: (product: IProduct) => void;
+  handleAddProductToCart: (product: IProduct) => void;
+  blockAddProductToCart: (product: IProduct) => boolean;
 }
 
-export const ListProducts = ({product, handleAddProduct}: IListProducts) => {
+export const ListProducts = ({
+  product,
+  handleAddProductToCart,
+  blockAddProductToCart,
+}: IListProducts) => {
   return (
     <S.Container>
       <S.TextContent>
         <S.Title>{product.name}</S.Title>
-        <S.Price>{product.price}</S.Price>
+        <S.Price>{formatToBRL(product.price)}</S.Price>
       </S.TextContent>
-
-      <S.TextContent>
-        <S.Title>{product.quantity}</S.Title>
-        <S.Price>{product.totalPrice}</S.Price>
-      </S.TextContent>
-
-      <S.AddProductButton onPress={() => handleAddProduct(product)}>
+      k
+      <S.AddProductButton
+        onPress={() => handleAddProductToCart(product)}
+        disabled={blockAddProductToCart(product)}
+        disabledStyle={blockAddProductToCart(product)}>
         <Icon name="plus" size={20} color="#fff" />
       </S.AddProductButton>
     </S.Container>

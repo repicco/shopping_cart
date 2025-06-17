@@ -25,8 +25,11 @@ export const Price = styled.Text`
   font-size: 16px;
 `;
 
-export const AddProductButton = styled.TouchableOpacity`
-  background-color: #007bff;
-  padding: 4px 4px;
-  border-radius: 4px;
-`;
+export const AddProductButton = styled.TouchableOpacity<{
+  disabledStyle?: boolean;
+}>(({disabledStyle}) => ({
+  backgroundColor: '#007bff',
+  padding: 4,
+  borderRadius: 4,
+  opacity: disabledStyle ? 0.5 : 1,
+}));

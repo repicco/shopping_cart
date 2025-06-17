@@ -1,38 +1,67 @@
-import {IProduct} from '../../../productModule/modules/productsGetModule/productGetTypes';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {ICartChangeReducer} from './cartChangeTypes';
+import {ICartChangeReducer, IProductCart} from './cartChangeTypes';
 
-export const cartChangeReducer = async ({
+export const cartAddProductReducer = async ({
   product,
-  products,
+  cartProducts,
+}: ICartChangeReducer) => {
+  const notHasProduct =
+    cartProducts.find(item => item.id === product.id) === undefined;
+
+  if (cartProducts?.length && !notHasProduct) {
+    return;
+  }
+
+  return [
+    ...cartProducts,
+    {
+      ...product,
+      quantity: 1,
+      totalPrice: product.price,
+    },
+  ];
+};
+
+export const cartRemoveProductRepository = async ({
+  product,
+  cartProducts,
+}: ICartChangeReducer) => {
+  return cartProducts.filter(item => item.id !== product.id);
+};
+
+export const cartCountItemReducer = async ({
+  product,
+  cartProducts,
   type = 'ADD',
 }: ICartChangeReducer) => {
-  const productsStr: string | null = await AsyncStorage.getItem('@products');
-  const repoProducts = productsStr ? JSON.parse(productsStr) : products;
-
-  const newProducts = repoProducts?.map((item: IProduct) => {
+  const newProducts = cartProducts?.map((item: IProductCart) => {
     if (item.id === product.id) {
-      let newQuantity = type === 'ADD' ? item.quantity + 1 : item.quantity - 1;
-      if (newQuantity <= 0) {
-        newQuantity = 0;
-      }
+      let newQuantity =
+        type === 'ADD'
+          ? item.quantity + 1
+          : item.quantity - 1 === 0
+          ? 1
+          : item.quantity - 1;
 
       return {
-        ...item,
+        ...product,
         quantity: newQuantity,
-        totalPrice: newQuantity * item.price,
+        totalPrice: newQuantity * product.price,
       };
     }
+
     return item;
   });
-
-  await AsyncStorage.setItem('@products', JSON.stringify(newProducts));
 
   return newProducts;
 };
 
-export const cartChangeRepository = ({
+export const cartAddProductRepository = ({
   product,
-  products,
+  cartProducts,
+}: ICartChangeReducer) => cartAddProductReducer({product, cartProducts});
+
+export const cartCountItemRepository = ({
+  product,
+  cartProducts,
   type,
-}: ICartChangeReducer) => cartChangeReducer({product, products, type});
+}: ICartChangeReducer) => cartCountItemReducer({product, cartProducts, type});
